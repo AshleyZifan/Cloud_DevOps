@@ -1,45 +1,70 @@
 # Introduction
 
-What project you will deploy and project GitHub URL (your implementation is preferred)
+Github Url: https://github.com/AshleyZifan/Trading_App
 
-Describe your project at a high level (microserver, psql, java)
+This application is an online stock trading simulation REST API wich allows users to execute market orders. Front end developers, mobile developers and traders can utilize this trading system. It is a MicroService which is implemented with Java SpringBoot. It uses IEX CLOUD API to get market data. and use JDBC connection to store data into PostgresSQL database.
 
 # Docker Architecture Diagram
 
 ### trading_app docker diagram 
 
-use draw.io and AWS icons (it's already in draw.io library) 
-
-images (docker hub and local) 
-
-bridge network  
-
-containers 
-
-label commands
+![Docker](C:\Bluespanda\Repositories\Cloud\Docker.jpg)
 
 ### Two docker files
 
-##### trading-app 
+- trading-app 
+- jrvs-psql
 
-talk about the process (e.g. compile and package jar and run the app)
+Use `schema.sql` to create tables.
 
-##### jrvs-psql
+```
+#you may or may not need sudo for docker cmds
 
-talk about how to create tables (e.g. schema.sql)
+#start docker
+sudo systemctl start docker
+#17.05 or higher
+sudo docker -v
+
+#create network bridge between SpringBoot app and postgreSQL
+sudo docker network create --driver bridge trading-net
+
+#build trading app
+sudo docker build -t trading-app .
+
+#build psql image
+cd psql/
+sudo docker build -t jrvs-psql .
+
+#run a psql container
+sudo docker run --rm --name jrvs-psql \
+-e POSTGRES_PASSWORD=password \
+-e POSTGRES_DB=jrvstrading \
+-e POSTGRES_USER=postgres \
+--network trading-net \
+-d -p 5432:5432 jrvs-psql
+
+#Setup IEX token
+IEX_TOKEN='your_IEX_token'
+#run a trading_app container
+sudo docker run \
+-e "PSQL_URL=jdbc:postgresql://jrvs-psql:5432/jrvstrading" \
+-e "PSQL_USER=postgres" \
+-e "PSQL_PASSWORD=password" \
+-e "IEX_PUB_TOKEN=${IEX_TOKEN}" \
+--network trading-net \
+-p 5000:5000 -t trading-app
+
+#verify health
+curl localhost:5000/health
+```
 
 # Cloud Architecture Diagram
 
 ### trading app diagram  
 
-use draw.io and aws icons (it's in the draw.io library)  - 
+![Cloud](C:\Bluespanda\Repositories\Cloud\Cloud.jpg)
 
-include ec2, alb, auto scaling, target group, rds  - 
+# Elastic Beanstalk and Jenkins CI/CD pipeline
 
-security groups  - 
 
-label all important ports(e.g. ALB HTTP, ec2 tpc:5000, RDS tcp:5432)
 
-# Elastic Beanstalk
-
-# Jenkins CI/CD pipeline
