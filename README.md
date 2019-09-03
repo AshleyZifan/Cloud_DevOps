@@ -8,7 +8,7 @@ This application is an online stock trading simulation REST API wich allows user
 
 ### trading_app docker diagram 
 
-![Docker](C:\Bluespanda\Repositories\Cloud\Docker.jpg)
+<img src="Docker.jpg">
 
 ### Two docker files
 
@@ -62,7 +62,7 @@ curl localhost:5000/health
 
 ### trading app diagram  
 
-![Cloud](C:\Bluespanda\Repositories\Cloud\Cloud.jpg)
+<img src="Cloud.jpg">
 
 # Elastic Beanstalk and Jenkins CI/CD pipeline
 
