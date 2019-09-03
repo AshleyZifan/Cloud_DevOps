@@ -66,5 +66,4 @@ curl localhost:5000/health
 
 # Elastic Beanstalk and Jenkins CI/CD pipeline
 
-
-
+<img src="jenkins.jpg">
